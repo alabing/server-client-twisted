@@ -1,0 +1,27 @@
+import struct
+
+class NodeCharactor:
+	def __init__(self,type_,extype,devType,netType,DMAC,SMAC,IP,neighborAPsMAC,neighborAPspwr,reserve,satelliteNUM,gpsTime,gpsValue0,gpsValue1,gpsValue2):
+		self.type=type_
+		self.extype=extype
+		self.devType=devType
+		self.netType=netType
+		self.DMAC=DMAC
+		self.SMAC=SMAC
+		self.IP=IP
+		self.neighborAPsMAC=neighborAPsMAC
+		self.neighborAPspwr=neighborAPspwr
+		self.reserve=reserve
+		self.satelliteNUM=satelliteNUM
+		self.gpsTime=gpsTime
+		self.gpsValue=[gpsValue0,gpsValue1,gpsValue2]
+
+def getCharactor(msg,ndst):
+	head_len = 16 + ndst*8
+	type_,extype,devType,netType,DMAC,SMAC,IP,neighborAPsMAC,neighborAPspwr,reserve,satelliteNUM,gpsTime,gpsValue0,gpsValue1,gpsValue2 = struct.unpack('hiBB8s40si40s5s20sB6s3d',msg[26:])
+	nodeCharactor = NodeCharactor(type_,extype,devType,netType,DMAC,SMAC,IP,neighborAPsMAC,neighborAPspwr,reserve,satelliteNUM,gpsTime,gpsValue0,gpsValue1,gpsValue2)
+	return nodeCharactor
+
+msg = b'\xb6\x00\x00\x00\x10P\x00\x01\x0c\x0c\x0c\x0c\x0c\x0c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xa0\x00\xfe\xff\x00\x00\x00\x01\x02\x03\x00\x00\x0c\x0c\x0c\x0c\x0c\x0c\x00\x00\x0c\x0c\x0c\x0c\x0c\x0c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00P\xf5\x95G0000000000000000\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+
+getCharactor(msg,1)
